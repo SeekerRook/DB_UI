@@ -1,0 +1,12 @@
+header{
+    text-align: center;
+    font-family: sans-serif;
+    color: black;
+}
+.error{
+    color: brown;
+    padding-top: 150px;
+}
+body{
+    background-color: rgb(19, 79, 170);
+}
