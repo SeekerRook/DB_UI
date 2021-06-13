@@ -6,7 +6,7 @@
         <meta name="author" content="" />
         <title>ASDF PALACE DBMS - Visists Tacker</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="logo.png" />
+        <!-- <link rel="icon" type="image/x-icon" href="logo.png" /> -->
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -15,6 +15,34 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
+
+
+
+
+    <!--c0nnection to DB -->
+    <?php
+        $servername = "localhost";
+        $username = "danii";
+        $password = "dczEKTWPSJRf6z";
+
+
+        // // Create connection
+        // $conn = mysqli_connect($servername, $username, $password, "cool_hotel");
+
+        // // Check connection
+        // if (!$conn) {
+        //   die("Connection failed: " . mysqli_connect_error());
+        // }
+        // $output = "Connection Successful";
+        // echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+        
+    ?>
+
+    <!--c0nnection to DB -->
+
+
+
+
     <body id="page-top">
         <body id="page-top">
             <!-- Navigation-->
@@ -27,12 +55,12 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarResponsive">
                         <ul class="navbar-nav ml-auto">
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.html">Home</a></li>
-                            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.html">Contact</a></li> -->
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.html">Visis Tracker</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.html">Views</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.html">NFC Tracker</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.html">Demographics</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.php">Home</a></li>
+                            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.php">Contact</a></li> -->
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visis Tracker</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
                             
                         </ul>
                     </div>
@@ -51,11 +79,78 @@
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                     <h1>Here we need:</h1>
+                     <h1>VIEW VISITS BY :</h1>
                      <br/>   
-                     <h1> Date selection, Facility Selection, Price Selection</h1>
-                     <br/>
-                     <button class="btn btn-primary btn-xl" >Sample Query</button>
+                     <h1 >
+                         <a style = "text-decoration: underline" href = "visitstracker.php">Date</a>   <a href = "visitstracker2.php">Facility</a>  <a href = "visitstracker3.php">Price</a> 
+                        </h1>
+                     <p id = "p" ></p>
+                    
+                 
+
+<!-- <form method="post" >
+        <input />
+        <input type="submit" name="button1" 
+                class="button" value="Button1" />
+          
+    </form> -->
+    
+    <form method="get">
+Start-Date: <input type="date" name="sdate"><br><br>
+End-Date: <input type="date" name="edate"><br>
+<!-- Facility: <input type="text" name="facility"><br>
+Price: <input type="text" name="price"><br> -->
+<br>
+<br>
+
+<input class="btn btn-primary btn-xl"  type="submit"name = "button1">
+</form>    
+                <?php 
+                
+                if($_GET){
+                
+                if(isset($_GET['button1'])) {
+                    $start_date=  $_GET['sdate'];
+                    $end_date=  $_GET['edate'];
+
+
+                    // echo '<script>alert("'.  $_POST['name'] . ',  '.$_POST['email'].'")</script>';
+                        $sql = "select * from
+                        (select FACILITY_ID,NFC_ID,Entry ,Exitry  from
+                        (select FACILITY_ID ,v.PLACE_ID ,NFC_ID, Entry ,Exitry 
+                        from cool_hotel.visit as v 
+                        join cool_hotel.host as h 
+                        on v.PLACE_ID = h.PLACE_ID) as mazi 
+                        where mazi.Entry >'". $start_date ."' and mazi.Entry < '2021-04-01 23:59:59') as ola
+                        where ola.FACILITY_ID = 'GYM'
+                        ";
+                        // echo $sql;
+                        $result = mysqli_query($conn, $sql);
+                        // echo $result;
+                        
+
+
+                        
+                        if (mysqli_num_rows($result) > 0) {
+                          // output data of each row    
+                          while($row = mysqli_fetch_assoc($result)) {
+                            echo "id: " . $row["FACILITY_ID"]." Nfc :". $row["NFC_ID"]. $row["Entry"]. $row["Exitry"]. "<br>";
+                          }        
+                        } else {
+                          echo "0 results";
+                        }
+
+                        
+                    }
+                    // }
+                }
+                     ?>
+
+
+
+
+
+
                 </div>
             </div>
         </section>

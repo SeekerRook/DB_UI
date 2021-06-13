@@ -4,9 +4,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>ASDF PALACE DBMS - NFC Tracker</title>
+        <title>ASDF PALACE DBMS - Visists Tacker</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="logo.png" />
+        <!-- <link rel="icon" type="image/x-icon" href="logo.png" /> -->
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -15,6 +15,34 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
+
+
+
+
+    <!--c0nnection to DB -->
+    <?php
+        $servername = "localhost";
+        $username = "danii";
+        $password = "dczEKTWPSJRf6z";
+
+
+        // // Create connection
+        // $conn = mysqli_connect($servername, $username, $password, "cool_hotel");
+
+        // // Check connection
+        // if (!$conn) {
+        //   die("Connection failed: " . mysqli_connect_error());
+        // }
+        // $output = "Connection Successful";
+        // echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+        
+    ?>
+
+    <!--c0nnection to DB -->
+
+
+
+
     <body id="page-top">
         <body id="page-top">
             <!-- Navigation-->
@@ -28,11 +56,11 @@
                     <div class="collapse navbar-collapse" id="navbarResponsive">
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.php">Home</a></li>
-                            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.html">Contact</a></li> -->
+                            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.php">Contact</a></li> -->
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visis Tracker</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.html">Views</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.html">NFC Tracker</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.html">Demographics</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
                             
                         </ul>
                     </div>
@@ -44,19 +72,94 @@
         <section class="page-section" id="contact">
             <div class="container">
                 <!-- Contact Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">NFC Tracker</h2>
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Visits Tracker</h2>
                 <!-- Icon Divider-->
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <h1>Here we need:</h1>
+                <h1>VIEW VISITS BY :</h1>
                 <br/>   
-                <h1> NFC ID, Places or Contaminated NFCs Selection</h1>
-                <br/>
-                <button class="btn btn-primary btn-xl" >Sample Query</button>
-           </div>
+                <h1 >
+                    <a  href = "visitstracker.php">Date</a>   <a style = "text-decoration: underline" href = "visitstracker2.php">Facility</a>  <a href = "visitstracker3.php">Price</a> 
+                   </h1>
+                     <p id = "p" ></p>
+                    
+                 
+
+<!-- <form method="post" >
+        <input />
+        <input type="submit" name="button1" 
+                class="button" value="Button1" />
+          
+    </form> -->
+    
+    <form method="get">
+<!-- Start-Date: <input type="text" name="sdate"><br>
+End-Date: <input type="text" name="edate"><br> -->
+
+<label name="facility" for="fac">Facility:</label>
+
+<select class="btn btn-secondary dropdown-toggle" name="fac" id="fac">
+  <option value="gym">Gym</option>
+  <option value="bar">Bar</option>
+  <option value="">ADD MORE</option>
+
+</select> 
+<br>
+<br>
+<br>
+<!-- Price: <input type="text" name="price"><br> -->
+<input class="btn btn-primary btn-xl" type="submit"name = "button1">
+</form>    
+                <?php 
+                
+                if($_GET){
+                
+                if(isset($_GET['button1'])) {
+                    
+                    $fac =  $_GET['facility'];
+                    
+
+                    // echo '<script>alert("'.  $_POST['name'] . ',  '.$_POST['email'].'")</script>';
+                        $sql = "select ft.FACILITY_ID,PLACE_ID ,NFC_ID, Entry ,Exitry  from
+                        (select FACILITY_ID ,v.PLACE_ID ,NFC_ID, Entry ,Exitry 
+                        from cool_hotel.visit as v 
+                        join cool_hotel.host as h 
+                        on v.PLACE_ID = h.PLACE_ID) as mazi 
+                        join open_facilities as ft
+                        on mazi.FACILITY_ID = ft.FACILITY_ID
+                        
+                        ";
+                        // echo $sql;
+                        $result = mysqli_query($conn, $sql);
+                        // echo $result;
+                        
+
+
+                        
+                        if (mysqli_num_rows($result) > 0) {
+                          // output data of each row    
+                          while($row = mysqli_fetch_assoc($result)) {
+                            echo "id: " . $row["FACILITY_ID"]." Nfc :". $row["NFC_ID"]. $row["Entry"]. $row["Exitry"]. "<br>";
+                          }        
+                        } else {
+                          echo "0 results";
+                        }
+
+                        
+                    }
+                    // }
+                }
+                     ?>
+
+
+
+
+
+
+                </div>
             </div>
         </section>
         <footer class="footer text-center">
@@ -97,7 +200,7 @@
                 <small>
                     Copyright &copy; Your Website
                     <!-- This script automatically adds the current year to your website footer-->
-                    <!-- (credit: https://updateyourfooter.com/)-->
+                    (credit: https://updateyourfooter.com/)
                     <script>
                         document.write(new Date().getFullYear());
                     </script>
