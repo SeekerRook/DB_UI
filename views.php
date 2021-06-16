@@ -43,7 +43,7 @@
     <body id="page-top">
         <body id="page-top">
             <!-- Navigation-->
-            <nav class="navbar bg-secondary text-uppercase fixed-top" id="mainNav"> <!-- navbar-expand-lg-->>
+            <nav class="navbar bg-secondary text-uppercase fixed-top" id="mainNav"> <!-- navbar-expand-lg-->
                 <div class="container">
                     <a class="navbar-brand js-scroll-trigger" href="#page-top">ASDF Palace DBMS</a>
                     <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.php">Home</a></li>
                             <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.php">Contact</a></li> -->
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visis Tracker</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visits Tracker</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
@@ -78,14 +78,15 @@
                  </div>
                  <h1>VIEWS :</h1>
                  <br/>   
-                 <h1 >
-                     <a style = "text-decoration: underline" href = "views.php">Sales</a>   <a href = "views2.php">Customers</a> 
-                    </h1>
+
         
                     <form method="get">
 
-
-                    <input class="btn btn-secondary btn-xl"  type="submit" name = "button1" value="Load Data"> 
+                    <h1  >
+                     <a style = "text-decoration: underline;" href = "views.php">Sales</a>   <a href = "views2.php">Customers</a> 
+                  
+                    <input class="btn btn-primary "  type="submit" name = "button1" value="Load Data"> 
+                    </h1> 
 </form>    
 
                  
@@ -151,9 +152,9 @@
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Location</h4>
                         <p class="lead mb-0">
-                            Iroon Polytechneiou 9
+                            Fransisco la Roche 123
                             <br />
-                            15780 Zografou, Athens
+                            38001 Los Hoteles,<br> Santa Cruz de Tenerife, Canarias
                         </p>
                     </div>
                     <!-- Footer Social Icons-->

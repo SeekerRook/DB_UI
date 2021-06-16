@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>ASDF PALACE DBMS - NFC Tracker</title>
+        <title>ASDF PALACE DBMS - Visits Tacker</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="logo.png" />
         <!-- Font Awesome icons (free version)-->
@@ -17,6 +17,9 @@
     </head>
 
 
+
+
+    <!--c0nnection to DB -->
     <?php
         $servername = "localhost";
         $username = "danii";
@@ -35,6 +38,10 @@
         
     ?>
 
+    <!--c0nnection to DB -->
+
+
+
 
     <body id="page-top">
         <body id="page-top">
@@ -51,9 +58,9 @@
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.php">Home</a></li>
                             <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.php">Contact</a></li> -->
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visits Tracker</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
                             
                         </ul>
                     </div>
@@ -65,132 +72,209 @@
         <section class="page-section" id="contact">
             <div class="container">
                 <!-- Contact Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">NFC Tracker</h2>
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Visits Tracker</h2>
                 <!-- Icon Divider-->
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <h1>Enter Possible Contaminated NFC ID</h1>
-                <br/>   
+                     <h2>VIEW VISITS BY :</h2>
+                     <br/>   
+                     <!-- <h1 >
+                         <a style = "text-decoration: underline" href = "visitstracker.php">Date</a>   <a href = "visitstracker2.php">Facility</a>  <a href = "visitstracker3.php">Price</a> 
+                        </h1> -->
+                     <p id = "p" ></p>
+                    
+                 
+
+<!-- <form method="post" >
+        <input />
+        <input type="submit" name="button1" 
+                class="button" value="Button1" />
+          
+    </form> -->
+    
+    <form method="get">
+Start-Date: <input type="date" name="sdate"><br><br>
+End-Date: <input type="date" name="edate"><br>
+
+<br>
+<label name="facility" for="fac">Facility Type:</label>
+
+<select class="btn btn-secondary dropdown-toggle" name="fac" id="fac">
+    <option value="all">All facility Types</option>
+  <option value="open">Open facilities</option>
+  <option value="reg">Registered facilities</option>
+
+<!-- Facility: <input type="text" name="facility"><br>
+Price: <input type="text" name="price"><br> -->
+
+</select> 
 
 
-                <form method="get">
-<h2>NFC:<h2> <input type="text" name="nfcid">
 <br>
 <br>
-<input class="btn btn-primary btn-xl"  type="submit" name = "covid" value="Load Data"> 
+
+Minimum Price: <input type="text" name="minp"><br><br>
+Maximum Price: <input type="text" name="maxp"><br>
+<br>
+
+<br>
+<label name="facility" for="fac">Facility:</label>
+
+<select class="btn btn-secondary dropdown-toggle" name="facfac" id="fac">
+    <option value="all">All Facilities</option>
+    <option value="bar">Bar</option>
+    <option value="gym">Gym</option>
+    <option value="hair_saloon">Hair Saloon</option>
+    <option value="meeting_room">Meeting Room</option>
+    <option value="restaurant">Restaurant</option>
+    <option value="sauna">Sauna</option>
+
+</select>
 <br>
 <br>
-</form>  
+<br>
+<input class="btn btn-primary btn-xl"  type="submit" name = "button1" value="Load Data"> 
+</form>    
                 <?php 
                 
                 if($_GET){
                 
-                if(isset($_GET['covid'])) {
-                    $nfc=  $_GET['nfcid'];
-               
+                if(isset($_GET['button1'])) {
+                    $start_date=  $_GET['sdate'];
+                    $end_date=  $_GET['edate'];
+                    // if($start_date == ''){
 
+                    //     $start_date = '0000-01-01';
+                    // }
+                    // if($end_date == ''){
+                    //     $end_date = '9999-12-31';
+                   // }
+                    $fac =  $_GET['fac'];
+                    $min = $_GET['minp'];
+                    $max = $_GET['maxp'];
+                    $facility = $_GET['facfac'];
+                    // if($min == ''){
+                    //     $min = '0';
+                    // }
+                    // if($max == ''){
+                    //     $max = '4900000';
+                    // }   
                     // echo '<script>alert("'.  $_POST['name'] . ',  '.$_POST['email'].'")</script>';
-                        $sql = "select * from visit 
-                        where NFC_ID = " .$nfc;
+                    
+
+                    $sql = "
+                         select FACILITY_ID,Cost,Entry ,Exitry ,sc.NFC_ID from
+                         (select mazi.FACILITY_ID,PLACE_ID ,mazi.NFC_ID, Entry ,Exitry,rs.DATE_TIME  from
                         
+                         (select FACILITY_ID ,v.PLACE_ID ,NFC_ID, Entry ,Exitry 
+                         from cool_hotel.visit as v 
+                         join cool_hotel.host as h 
+                         on v.PLACE_ID = h.PLACE_ID
+                          ) as mazi 
+                        
+                         join receive_service as rs
+                         on mazi.FACILITY_ID = rs.FACILITY_ID and mazi.NFC_ID = rs.NFC_ID and rs.DATE_TIME = Entry) as n_cost
+                         join service_charge as sc
+                         on sc.DATE_TIME = n_cost.DATE_TIME and sc.NFC_ID = n_cost.NFC_ID
+                      ";
+                        $of = 0;
+                        if($fac != 'all'){
+                            $of = 1;
+                            $sql = " \nselect o_f.FACILITY_ID ,Cost,Entry ,Exitry ,NFC_ID from (". $sql;
+                                $sql =  $sql . "\n ) as temp join ".$fac."_facilities as o_f on temp.FACILITY_ID = o_f.FACILITY_ID" ;
+                               }
+
+                                                   
+                        //where Entry > '2020-04-01 00:00:00' and Entry < '2022-04-01 23:59:59'
+                        $where = "where " ;
+
+                        $n = 0;
+                        if ($start_date != '' && $end_date != '' ){
+                            $where = $where. " Entry > '" .$start_date. "' and Entry < '".$end_date."'";
+                            $n += 1;
+                        }
+
+                        if ($min != '' && $max != '' ){
+                            if ($n == 1){
+                                $where =  $where . " and ";
+                            }
+                            $where = $where. " Cost >= " .$min. " and Cost <= ".$max."";
+                            $n +=1;
+                        }
+                        
+                        if ($facility != 'all' ){
+                            if ($n!= 0 ){
+                                $where =  $where . " and ";
+                            }
+                            if($of == 1){
+                            $where = $where. "o_f.FACILITY_ID = '".$facility."'";
+                            }
+                            else{
+                                $where = $where. "FACILITY_ID = '".$facility."'";
+                            }
+                            $n +=1;
+                        }
+                        
+                        if($n > 0){
+                            $sql = $sql. "\n".$where ;
+                        }
+
+                  
+                        echo "<script>console.log(`". $sql."`);</script>";
+                        
+
+
                         // echo $sql;
                         $result = mysqli_query($conn, $sql);
                         // echo $result;
-                        echo " <h1> Contaminated Person: </h1>";
                         echo '<table class="table table-striped table-hover">
                         <thead>
                         <tr>
                          <th scope="col">#</th>
                           <th scope="col">Facility</th>
+                          <th scope="col">Nfc</th>
                           <th scope="col">Entry</th>
                           <th scope="col">Exitry</th>
+                          <th scope="col">Cost</th>
                         </tr>
                       </thead>';
-                      $idx =1;
+                        
+                      echo "<tbody>";
                         if (mysqli_num_rows($result) > 0) {
-                          // output data of each row
-                          
+                          // output data of each row    
+                          $idx = 1;
                           while($row = mysqli_fetch_assoc($result)) {
-                              if ($idx==1){
-                                 echo '<h2>'.$row["NFC_ID"].'</h2>';
-                              }
-                            // echo "id: " . $row["NFC_ID"]." Nfc :". $row["PLACE_ID"]. $row["Entry"]. $row["Exitry"]. "<br>";
-                            echo '
-                            <th scope="row">'.$idx.'</th>
-
-                            <td>'. $row["PLACE_ID"].'</td>
-                            <td>'. $row["Entry"].'</td>
-                            <td>'. $row["Exitry"].'</td>
-                            </tr>';
-
-                            ;
-                            $idx +=1;
+                            echo '  <tr>
+                                      <th scope="row">'.$idx.'</th>
+                                      <td>'.$row["FACILITY_ID"].'</td>
+                                      <td>'. $row["NFC_ID"].'</td>
+                                      <td>'. $row["Entry"].'</td>
+                                      <td>'.$row["Exitry"].'</td>
+                                      <td>'.$row["Cost"].'</td>
+                                      </tr>';
+                            $idx += 1;    
+                            // echo "id: " . $row["FACILITY_ID"]." Nfc :". $row["NFC_ID"]. $row["Entry"]. $row["Exitry"]. "<br>";
                           }        
                         } else {
                           echo "0 results";
+                        echo'<tr></tr>';
                         }
                         echo "</tbody></table>";
                         
-                        echo " <br><h1> Possibly Contaminated: </h1>";
-
-                        echo '<table class="table table-striped table-hover">
-                        <thead>
-                        <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">NFC ID</th>
-                         <th scope="col">Facility</th>
-                         <th scope="col">Entry</th>
-                         <th scope="col">Exitry</th>
-                        </tr>
-                      </thead>';
-                            $sql2 = "select distinct (NFC_ID),PLACE_ID ,Entry, Exitry from (select covidianos.PLACE_ID, visit.Entry,visit.Exitry,visit.NFC_ID from 
-                            (select * from visit 
-                            where NFC_ID =". $nfc.") as covidianos
-                            join visit 
-                            on covidianos.PLACE_ID = visit.PLACE_ID
-                            where (((visit.Entry <= covidianos.Entry and visit.Exitry >= covidianos.Exitry) or
-                                   (visit.Entry <= covidianos.Entry and visit.Exitry <= covidianos.Exitry) or 
-                                   (visit.Entry >= covidianos.Entry and visit.Exitry <= covidianos.Exitry) or 
-                                   (visit.Entry >= covidianos.Entry and visit.Exitry >= covidianos.Exitry)
-                                   )and visit.NFC_ID != ".$nfc.")
-                            ) as kati
-                            order by NFC_ID
-                            ";
-                            
-                            // echo $sql;
-                            $result = mysqli_query($conn, $sql2);
-                            // echo $result;
-                       
-                            if (mysqli_num_rows($result) > 0) {
-                              // output data of each row
-                              while($row = mysqli_fetch_assoc($result)) {
-                                // echo "id: " . $row["NFC_ID"]." Nfc :". $row["PLACE_ID"]. $row["Entry"]. $row["Exitry"]. "<br>";
-                                echo '
-                                <th scope="row">'.$idx.'</th>
-    
-                                <td>'. $row["NFC_ID"].'</td>
-                                <td>'. $row["PLACE_ID"].'</td>
-                                <td>'. $row["Entry"].'</td>
-                                <td>'. $row["Exitry"].'</td>
-                                </tr>';
-                              }        
-                            } else {
-                              echo "0 results";
-                            }
-
-                            echo "</tbody></table>";
-
                     }
-                    
+                    // }
                 }
                      ?>
-                     
 
-                
-           </div>
+
+
+
+
+
+                </div>
             </div>
         </section>
         <footer class="footer text-center">
@@ -199,10 +283,9 @@
                     <!-- Footer Location-->
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Location</h4>
-                        <p class="lead mb-0">
                             Fransisco la Roche 123
                             <br />
-                            38001 Los Hoteles,<br> Santa Cruz de Tenerife, Canarias
+                            38001 Los Hoteles, Santa Cruz de Tenerife, Canarias
                         </p>
                     </div>
                     <!-- Footer Social Icons-->
@@ -231,7 +314,7 @@
                 <small>
                     Copyright &copy; Your Website
                     <!-- This script automatically adds the current year to your website footer-->
-                    <!-- (credit: https://updateyourfooter.com/)-->
+                    (credit: https://updateyourfooter.com/)
                     <script>
                         document.write(new Date().getFullYear());
                     </script>

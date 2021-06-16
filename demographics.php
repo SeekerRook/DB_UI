@@ -37,7 +37,7 @@
     <body id="page-top">
         <body id="page-top">
             <!-- Navigation-->
-            <nav class="navbar bg-secondary text-uppercase fixed-top" id="mainNav"> <!-- navbar-expand-lg-->>
+            <nav class="navbar bg-secondary text-uppercase fixed-top" id="mainNav"> <!-- navbar-expand-lg-->
                 <div class="container">
                     <a class="navbar-brand js-scroll-trigger" href="#page-top">ASDF Palace DBMS</a>
                     <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.php">Home</a></li>
                             <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.php">Contact</a></li> -->
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visis Tracker</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visits Tracker</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
@@ -70,28 +70,29 @@
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <h1>Here we need:</h1>
+                <h1>Select Data to Display:</h1>
                 <br/>   
-                <h1> Age Group Selection, View Type Selection</h1>
                 <br/>
                 
                 <html>  
 <head></head>  
 <!-- <title>Static Dropdown List</title>    -->
 <form method="get">
-Query:
-<select name = "Query" id = "Query">  
+Type:
+<select  class="btn btn-secondary dropdown-toggle"  name = "Query" id = "Query">  
   <option value="q1">Most Visited Places</option>
   <option value="q2">Most Visited Facilities</option>  
   <option value="q3">Most Used Facilities</option>  
  </select>
-Time_Period: 
-<select name = "time_p" id = "periods">  
+ <br><br>
+Period: 
+<select  class="btn btn-secondary dropdown-toggle"  name = "time_p" id = "periods">  
   <option value="01-00-00">Last Year</option> 
   <option value="00-01-00">Last Month</option>  
  </select>
+ <br><br>
 Age: 
-<select name = "age" id = "Age">  
+<select  class="btn btn-secondary dropdown-toggle"  name = "age" id = "Age">  
   <option value="kiddos">20-40</option> 
   <option value="boomers">41-60</option>  
   <option value="geezers">61+</option>  
@@ -99,7 +100,7 @@ Age:
  <br>
  <br>
 <!-- Time_Period: <input type="text" name="time_p"><br> -->
-<input class="btn btn-primary btn-xl" type="submit"name = "covid">
+<input class="btn btn-primary btn-xl" type="submit"value = "Show Statistics"name = "covid">
 </form>
  
 </body>  
@@ -161,14 +162,32 @@ Age:
                         " ;
                         $result = mysqli_query($conn, $q1);
 
+                        echo '<table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                         <th scope="col">#</th>
+                         <th scope="col">Place</th>
+                         <th scope="col">Entries</th>
+                        </tr>
+                      </thead>';
+                            $idx = 1;
                         if (mysqli_num_rows($result) > 0) {
                           // output data of each row
                           while($row = mysqli_fetch_assoc($result)) {
-                            echo " Nfc :". $row["PLACE_ID"]. $row["entries"]. "<br>";
+                            // echo " Nfc :". $row["PLACE_ID"]. $row["entries"]. "<br>";
+                            echo '
+                            <th scope="row">'.$idx.'</th>
+
+                            <td>'. $row["PLACE_ID"].'</td>
+                            <td>'. $row["entries"].'</td>
+                            </tr>';
+                            $idx += 1;
                           }        
                         } else {
                           echo "0 results";
                         }
+
+                        echo "</tbody></table>";
                     }
                     else if($_GET['Query'] == 'q2'){
                     
@@ -185,15 +204,30 @@ Age:
                     ";
                     $result2 = mysqli_query($conn, $q2);
                     
-                    
+                    echo '<table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                     <th scope="col">#</th>
+                     <th scope="col">Facility</th>
+                     <th scope="col">Entries</th>
+                    </tr>
+                  </thead>';
+                  $idx = 1;
                     if (mysqli_num_rows($result2) > 0) {
                         // output data of each row
                         while($row = mysqli_fetch_assoc($result2)) {
-                          echo " Facility Id:". $row["FACILITY_ID"]. " Entries: ". $row["entries"]. "<br>";
+                        //   echo " Facility Id:". $row["FACILITY_ID"]. " Entries: ". $row["entries"]. "<br>";
+                        echo '
+                        <th scope="row">'.$idx.'</th>
+                        <td>'. $row["FACILITY_ID"].'</td>
+                        <td>'. $row["entries"].'</td>
+                        </tr>';
+                        $idx += 1;
                         }        
                       } else {
                         echo "0 results";
                       }
+                      echo "</tbody></table>";
 
 
                     }
@@ -215,16 +249,31 @@ Age:
                         ";
                         $result3 = mysqli_query($conn, $q3);
                         
-                        
+                        echo '<table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                         <th scope="col">#</th>
+                         <th scope="col">Facility</th>
+                         <th scope="col">Entries</th>
+                        </tr>
+                      </thead>';
+                      $idx = 1;
                         if (mysqli_num_rows($result3) > 0) {
                             // output data of each row
                             while($row = mysqli_fetch_assoc($result3)) {
-                              echo " Place Id:". $row["PLACE_ID"]. " Entries: ". $row["cntt"]. "<br>";
+                            //   echo " Place Id:". $row["PLACE_ID"]. " Entries: ". $row["cntt"]. "<br>";
+                            echo '
+                            <th scope="row">'.$idx.'</th>
+                            <td>'. $row["PLACE_ID"].'</td>
+                            <td>'. $row["cntt"].'</td>
+                            </tr>';
+                            $idx +=1;
                             }        
                           } else {
                             echo "0 results";
                           }
-    
+                          echo "</tbody></table>";
+
     
                         }
                 }
@@ -243,9 +292,9 @@ Age:
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Location</h4>
                         <p class="lead mb-0">
-                            Iroon Polytechneiou 9
+                            Fransisco la Roche 123
                             <br />
-                            15780 Zografou, Athens
+                            38001 Los Hoteles,<br> Santa Cruz de Tenerife, Canarias
                         </p>
                     </div>
                     <!-- Footer Social Icons-->
