@@ -6,7 +6,7 @@
         <meta name="author" content="" />
         <title>ASDF PALACE DBMS - Demographics</title>
         <!-- Favicon-->
-        <!-- <link rel="icon" type="image/x-icon" href="logo.png" /> -->
+        <link rel="icon" type="image/x-icon" href="logo.png" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -15,6 +15,25 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
+
+    <?php
+        $servername = "localhost";
+        $username = "danii";
+        $password = "dczEKTWPSJRf6z";
+
+
+        // Create connection
+        $conn = mysqli_connect($servername, $username, $password, "cool_hotel");
+
+        // Check connection
+        if (!$conn) {
+          die("Connection failed: " . mysqli_connect_error());
+        }
+        $output = "Connection Successful";
+        echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+        
+    ?>
+    
     <body id="page-top">
         <body id="page-top">
             <!-- Navigation-->
@@ -30,9 +49,9 @@
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.php">Home</a></li>
                             <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.php">Contact</a></li> -->
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visis Tracker</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
                             
                         </ul>
                     </div>
@@ -55,7 +74,165 @@
                 <br/>   
                 <h1> Age Group Selection, View Type Selection</h1>
                 <br/>
-                <button class="btn btn-primary btn-xl" >Sample Query</button>
+                
+                <html>  
+<head></head>  
+<!-- <title>Static Dropdown List</title>    -->
+<form method="get">
+Query:
+<select name = "Query" id = "Query">  
+  <option value="q1">Most Visited Places</option>
+  <option value="q2">Most Visited Facilities</option>  
+  <option value="q3">Most Used Facilities</option>  
+ </select>
+Time_Period: 
+<select name = "time_p" id = "periods">  
+  <option value="01-00-00">Last Year</option> 
+  <option value="00-01-00">Last Month</option>  
+ </select>
+Age: 
+<select name = "age" id = "Age">  
+  <option value="kiddos">20-40</option> 
+  <option value="boomers">41-60</option>  
+  <option value="geezers">61+</option>  
+ </select>
+ <br>
+ <br>
+<!-- Time_Period: <input type="text" name="time_p"><br> -->
+<input class="btn btn-primary btn-xl" type="submit"name = "covid">
+</form>
+ 
+</body>  
+<html> 
+
+                <?php 
+                
+                if($_GET){
+                $today = date("Y-m-d");
+                $cur_date = date_create($today);
+                
+                $time_period = $_GET['time_p'];
+                $temp_p = date_create($time_period);
+                $diff_p = date_diff($cur_date,$temp_p); 
+                $diff_p_str =  $diff_p->format('%Y-%M-%D');
+                $tmpmin;
+                $tmpmax;
+                if(isset($_GET['covid'])) {
+                    if($_GET['age'] == 'kiddos'){                        
+                        $tmpmin = date('0020-00-00');
+                        $tmpmax = date('0040-00-00');
+                    }
+                    else if($_GET['age'] == 'boomers'){
+                        $tmpmin = date('0041-00-00');
+                        $tmpmax = date('0060-00-00');
+                    }
+                    else if($_GET['age'] == 'geezers'){
+                        $tmpmin = date('0061-00-00');
+                        $tmpmax = $today;
+                        
+                    }
+
+
+
+                        $targetmin = date_create($tmpmin);
+                        $targetmax = date_create($tmpmax);
+                        
+                        
+                        $intervalmin = date_diff($cur_date,$targetmin);
+                        $intervalmax = date_diff($cur_date,$targetmax);
+
+                        $diffmin =  $intervalmin->format('%Y-%M-%D');
+                        $diffmax =  $intervalmax->format('%Y-%M-%D');
+                        
+                    
+                    
+
+
+                    // echo "c.Birth_Date > '".$diff."' and c.Birth_Date < '".$today."') as ola";
+                        if($_GET['Query'] == 'q1'){
+                    // echo '<script>alert("'.  $_POST['name'] . ',  '.$_POST['email'].'")</script>';
+                        $q1 = "select  distinct (PLACE_ID) ,COUNT(Entry) OVER (PARTITION BY PLACE_ID)  as entries from
+                        (select c.Birth_Date ,v.NFC_ID , PLACE_ID ,Entry 
+                        from visit as v 
+                        join customer as c
+                        on c.NFC_ID = v.NFC_ID 
+                        where c.Birth_Date >= '".$diffmax."' and c.Birth_Date <= '".$diffmin."' and Entry >= '".$diff_p_str."') as ola
+                        order by entries desc
+                        " ;
+                        $result = mysqli_query($conn, $q1);
+
+                        if (mysqli_num_rows($result) > 0) {
+                          // output data of each row
+                          while($row = mysqli_fetch_assoc($result)) {
+                            echo " Nfc :". $row["PLACE_ID"]. $row["entries"]. "<br>";
+                          }        
+                        } else {
+                          echo "0 results";
+                        }
+                    }
+                    else if($_GET['Query'] == 'q2'){
+                    
+                    $q2 = "select distinct (host.FACILITY_ID), COUNT(soth.entries) OVER (PARTITION BY host.FACILITY_ID) as entries from
+                    (select cont.NFC_ID,PLACE_ID,entries from
+                    (SELECT  NFC_ID,PLACE_ID ,COUNT(Entry) OVER (PARTITION BY PLACE_ID)  as entries 
+                    FROM visit 
+                    where Entry > '".$diff_p_str."' ) as cont
+                    join customer  ON customer.NFC_ID = cont.NFC_ID 
+                    where (customer.Birth_Date > '".$diffmax."' and customer.Birth_Date < '".$diffmin."')
+                    ) as soth
+                    join host on soth.PLACE_ID = host.PLACE_ID 
+                    order by entries desc
+                    ";
+                    $result2 = mysqli_query($conn, $q2);
+                    
+                    
+                    if (mysqli_num_rows($result2) > 0) {
+                        // output data of each row
+                        while($row = mysqli_fetch_assoc($result2)) {
+                          echo " Facility Id:". $row["FACILITY_ID"]. " Entries: ". $row["entries"]. "<br>";
+                        }        
+                      } else {
+                        echo "0 results";
+                      }
+
+
+                    }
+
+
+
+                    else if($_GET['Query'] == 'q3'){
+                    
+                        $q3 = "select distinct PLACE_ID , COUNT( NFC_ID ) OVER (PARTITION BY PLACE_ID) as cntt
+                        from
+                        (select nfcc.NFC_ID,PLACE_ID from
+                        (select distinct (NFC_ID),PLACE_ID 
+                        FROM visit
+                        where Entry > '". $diff_p_str ."') as nfcc
+                        join customer on customer.NFC_ID = nfcc.NFC_ID
+                        where (customer.Birth_Date > '". $diffmax  ."' and customer.Birth_Date < '".$diffmin  ."')) as soth
+                        order by cntt desc
+                        
+                        ";
+                        $result3 = mysqli_query($conn, $q3);
+                        
+                        
+                        if (mysqli_num_rows($result3) > 0) {
+                            // output data of each row
+                            while($row = mysqli_fetch_assoc($result3)) {
+                              echo " Place Id:". $row["PLACE_ID"]. " Entries: ". $row["cntt"]. "<br>";
+                            }        
+                          } else {
+                            echo "0 results";
+                          }
+    
+    
+                        }
+                }
+                }
+                     ?>
+
+
+
            </div>
             </div>
         </section>
@@ -82,9 +259,9 @@
                         <p class="lead mb-0">
                             Christoforos Vardakis el18883
                             <br />
-                            Stelio Balidis elXXXXX
+                            Stelio Balidis el17893
                             <br />
-                            Daniela Stoian elXXXXX
+                            Daniela Stoian el18140
                             
                         </p>
                     </div>

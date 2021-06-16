@@ -6,7 +6,7 @@
         <meta name="author" content="" />
         <title>ASDF PALACE DBMS - Views</title>
         <!-- Favicon-->
-        <!-- <link rel="icon" type="image/x-icon" href="logo.png" /> -->
+        <link rel="icon" type="image/x-icon" href="logo.png" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -15,6 +15,28 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
+
+   
+<!--c0nnection to DB -->
+<?php
+        $servername = "localhost";
+        $username = "danii";
+        $password = "dczEKTWPSJRf6z";
+
+
+        // Create connection
+        $conn = mysqli_connect($servername, $username, $password, "cool_hotel");
+
+        // Check connection
+        if (!$conn) {
+          die("Connection failed: " . mysqli_connect_error());
+        }
+        $output = "Connection Successful";
+        echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+        
+    ?>
+
+    <!--c0nnection to DB --> 
     <body id="page-top">
         <body id="page-top">
             <!-- Navigation-->
@@ -56,14 +78,15 @@
                  <h1 >
                      <a  href = "views.php">Sales</a>   <a style = "text-decoration: underline" href = "views2.php">Customers</a> 
                     </h1>
-                     <!-- <button class="btn btn-primary btn-xl" >Sample Query</button> -->
+                    <form method="get">
+                    <input class="btn btn-secondary btn-xl"  type="submit" name = "button1" value="Load Data"> 
+                    </form>
                      <?php 
                 
                      if($_GET){
                      
-                     if(isset($_GET['button1'])) {
-                         $start_date=  $_GET['sdate'];
-                         $end_date=  $_GET['edate'];
+                    //  if(isset($_GET['button1'])) {
+
      
      
                          // echo '<script>alert("'.  $_POST['name'] . ',  '.$_POST['email'].'")</script>';
@@ -73,20 +96,43 @@
                              $result = mysqli_query($conn, $sql);
                              // echo $result;
                              
+                             echo '<table class="table table-striped table-hover">
+                             <thead>
+                             <tr>
+                              <th scope="col">#</th>
+                               <th scope="col">NFC ID</th>
+                               <th scope="col">Name</th>
+                               <th scope="col">Surname</th>
+                               <th scope="col">Birth Date</th>
+                               <th scope="col">Certification</th>
+                               <th scope="col">Phone</th>
+                               <th scope="col">Email</th>
+                             </tr>
+                           </thead>';
      
-     
-                             
+                             $idx = 1;
                              if (mysqli_num_rows($result) > 0) {
                                // output data of each row    
                                while($row = mysqli_fetch_assoc($result)) {
-                                 echo "id: " . $row["FACILITY_ID"]." Nfc :". $row["NFC_ID"]. $row["Entry"]. $row["Exitry"]. "<br>";
-                               }        
+                                //  echo " ID: " . $row["NFC_ID"]." Name :". $row["First_Name"]. " Surname: ".$row["Last_Name"]." Birth Date: ". $row["Birth_Date"]." Certification: ".$row["Certification_ID"]." Phone: ".$row["Telephone"]." Email: ".$row["Email"]. "<br>";
+                                 echo '  <tr>
+                                 <th scope="row">'.$idx.'</th>
+                                 <td>'.$row["NFC_ID"].'</td>
+                                 <td>'. $row["First_Name"].'</td>
+                                 <td>'. $row["Last_Name"].'</td>
+                                 <td>'.$row["Birth_Date"].'</td>
+                                 <td>'.$row["Certification_ID"].'</td>
+                                 <td>'.$row["Telephone"].'</td>
+                                 <td>'.$row["Email"].'</td>
+                                 </tr>';
+                                 $idx +=1;
+                                }        
                              } else {
                                echo "0 results";
                              }
-     
+                             echo "</tbody></table>";
                              
-                         }
+                        //  }
                          // }
                      }
                           ?>
@@ -117,9 +163,9 @@
                         <p class="lead mb-0">
                             Christoforos Vardakis el18883
                             <br />
-                            Stelio Balidis elXXXXX
+                            Stelio Balidis el17893
                             <br />
-                            Daniela Stoian elXXXXX
+                            Daniela Stoian el18140
                             
                         </p>
                     </div>

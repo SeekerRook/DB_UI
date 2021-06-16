@@ -7,7 +7,7 @@
         <meta name="author" content="" />
         <title>ASDF PALACE DBMS - Home</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="assets/logo.sng" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -89,9 +89,9 @@
                                 <p class="lead mb-0">
                                     Christoforos Vardakis el18883
                                     <br />
-                                    Stelio Balidis elXXXXX
+                                    Stelio Balidis el17893
                                     <br />
-                                    Daniela Stoian elXXXXX
+                                    Daniela Stoian el18140
                                     
                                 </p>
                             </div>

@@ -6,7 +6,7 @@
         <meta name="author" content="" />
         <title>ASDF PALACE DBMS - Views</title>
         <!-- Favicon-->
-        <!-- <link rel="icon" type="image/x-icon" href="logo.png" /> -->
+        <link rel="icon" type="image/x-icon" href="logo.png" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -15,6 +15,31 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
+
+
+<!--c0nnection to DB -->
+<?php
+        $servername = "localhost";
+        $username = "danii";
+        $password = "dczEKTWPSJRf6z";
+
+
+        // Create connection
+        $conn = mysqli_connect($servername, $username, $password, "cool_hotel");
+
+        // Check connection
+        if (!$conn) {
+          die("Connection failed: " . mysqli_connect_error());
+        }
+        $output = "Connection Successful";
+        echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+        
+    ?>
+
+    <!--c0nnection to DB -->
+
+
+
     <body id="page-top">
         <body id="page-top">
             <!-- Navigation-->
@@ -28,11 +53,11 @@
                     <div class="collapse navbar-collapse" id="navbarResponsive">
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.php">Home</a></li>
-                            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.html">Contact</a></li> -->
+                            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.php">Contact</a></li> -->
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visis Tracker</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.html">NFC Tracker</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.html">Demographics</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
                             
                         </ul>
                     </div>
@@ -56,36 +81,63 @@
                  <h1 >
                      <a style = "text-decoration: underline" href = "views.php">Sales</a>   <a href = "views2.php">Customers</a> 
                     </h1>
-                     <!-- <button class="btn btn-primary btn-xl" >Sample Query</button> -->
+        
+                    <form method="get">
+
+
+                    <input class="btn btn-secondary btn-xl"  type="submit" name = "button1" value="Load Data"> 
+</form>    
+
+                 
             <?php 
                 
-
+                    if ($_GET){
                     // echo '<script>alert("'.  $_POST['name'] . ',  '.$_POST['email'].'")</script>';
-                        $sql = "select FACILITY_ID,rs.DATE_TIME,NFC_ID ,Cost
+                        $sql = "select FACILITY_ID,rs.DATE_TIME,rs.NFC_ID ,Cost
                         from receive_service as rs
                         join service_charge as sc
-                        on rs.DATE_TIME = sc.DATE_TIME 
-                        order by FACILITY_ID 
+                        on rs.DATE_TIME = sc.DATE_TIME and rs.NFC_ID = sc.NFC_ID 
+                        order by FACILITY_ID  
                         
                         ";
                         // echo $sql;
                         $result = mysqli_query($conn, $sql);
                         // echo $result;
                         
+                        // echo "Success";
 
+                        echo '<table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                         <th scope="col">#</th>
+                          <th scope="col">Facility</th>
+                          <th scope="col">Date - Time</th>
+                          <th scope="col">NFC ID</th>
+                          <th scope="col">Cost</th>
+                        </tr>
+                      </thead>';
 
-                        
+                        $idx = 0;
                         if (mysqli_num_rows($result) > 0) {
                           // output data of each row    
                           while($row = mysqli_fetch_assoc($result)) {
-                            echo "id: " . $row["FACILITY_ID"]." Nfc :". $row["NFC_ID"]. $row["Entry"]. $row["Exitry"]. "<br>";
+                            // echo "Facility: " . $row["FACILITY_ID"]." Date: ". $row["DATE_TIME"]. "NFC ID: " .$row["NFC_ID"]."Cost: ". $row["Cost"]. "<br>";
+                            echo '  <tr>
+                            <th scope="row">'.$idx.'</th>
+                            <td>'.$row["FACILITY_ID"].'</td>
+                            <td>'. $row["DATE_TIME"].'</td>
+                            <td>'. $row["NFC_ID"].'</td>
+                            <td>'.$row["Cost"].'</td>
+    
+                            </tr>';
+                            $idx +=1;
                           }        
                         } else {
                           echo "0 results";
                         }
-
+                        echo "</tbody></table>";
                         
-
+                    }
                 
                      ?>
                 </div>
@@ -115,9 +167,9 @@
                         <p class="lead mb-0">
                             Christoforos Vardakis el18883
                             <br />
-                            Stelio Balidis elXXXXX
+                            Stelio Balidis el17893
                             <br />
-                            Daniela Stoian elXXXXX
+                            Daniela Stoian el18140
                             
                         </p>
                     </div>

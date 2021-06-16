@@ -6,7 +6,7 @@
         <meta name="author" content="" />
         <title>ASDF PALACE DBMS - NFC Tracker</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="logo.png" />
+        <!-- <link rel="icon" type="image/x-icon" href="logo.png" /> -->
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -15,6 +15,27 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
+
+
+    <?php
+        $servername = "localhost";
+        $username = "danii";
+        $password = "dczEKTWPSJRf6z";
+
+
+        // Create connection
+        $conn = mysqli_connect($servername, $username, $password, "cool_hotel");
+
+        // Check connection
+        if (!$conn) {
+          die("Connection failed: " . mysqli_connect_error());
+        }
+        $output = "Connection Successful";
+        echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+        
+    ?>
+
+
     <body id="page-top">
         <body id="page-top">
             <!-- Navigation-->
@@ -30,9 +51,9 @@
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="index.php">Home</a></li>
                             <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="contact.php">Contact</a></li> -->
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="visitstracker.php">Visis Tracker</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
-                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="views.php">Views</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="nfctracker.php">NFC Tracker</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="demographics.php">Demographics</a></li>
                             
                         </ul>
                     </div>
@@ -55,7 +76,121 @@
                 <br/>   
                 <h1> NFC ID, Places or Contaminated NFCs Selection</h1>
                 <br/>
-                <button class="btn btn-primary btn-xl" >Sample Query</button>
+
+                <form method="get">
+NFC: <input type="text" name="nfcid">
+<br>
+<br>
+<input class="btn btn-secondary btn-xl"  type="submit" name = "covid" value="Load Data"> 
+<br>
+<br>
+</form>  
+                <?php 
+                
+                if($_GET){
+                
+                if(isset($_GET['covid'])) {
+                    $nfc=  $_GET['nfcid'];
+               
+
+                    // echo '<script>alert("'.  $_POST['name'] . ',  '.$_POST['email'].'")</script>';
+                        $sql = "select * from visit 
+                        where NFC_ID = " .$nfc;
+                        
+                        // echo $sql;
+                        $result = mysqli_query($conn, $sql);
+                        // echo $result;
+                        echo " <h1> Contaminated Person: </h1>";
+                        echo '<table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                         <th scope="col">#</th>
+                          <th scope="col">Facility</th>
+                          <th scope="col">Entry</th>
+                          <th scope="col">Exitry</th>
+                        </tr>
+                      </thead>';
+                      $idx =1;
+                        if (mysqli_num_rows($result) > 0) {
+                          // output data of each row
+                          
+                          while($row = mysqli_fetch_assoc($result)) {
+                              if ($idx==1){
+                                 echo '<h2>'.$row["NFC_ID"].'</h2>';
+                              }
+                            // echo "id: " . $row["NFC_ID"]." Nfc :". $row["PLACE_ID"]. $row["Entry"]. $row["Exitry"]. "<br>";
+                            echo '
+                            <th scope="row">'.$idx.'</th>
+
+                            <td>'. $row["PLACE_ID"].'</td>
+                            <td>'. $row["Entry"].'</td>
+                            <td>'. $row["Exitry"].'</td>
+                            </tr>';
+
+                            ;
+                            $idx +=1;
+                          }        
+                        } else {
+                          echo "0 results";
+                        }
+                        echo "</tbody></table>";
+                        
+                        echo " <br><h1> Possibly Contaminated: </h1>";
+
+                        echo '<table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                         <th scope="col">#</th>
+                         <th scope="col">NFC ID</th>
+                         <th scope="col">Facility</th>
+                         <th scope="col">Entry</th>
+                         <th scope="col">Exitry</th>
+                        </tr>
+                      </thead>';
+                            $sql2 = "select distinct (NFC_ID),PLACE_ID ,Entry, Exitry from (select covidianos.PLACE_ID, visit.Entry,visit.Exitry,visit.NFC_ID from 
+                            (select * from visit 
+                            where NFC_ID =". $nfc.") as covidianos
+                            join visit 
+                            on covidianos.PLACE_ID = visit.PLACE_ID
+                            where (((visit.Entry <= covidianos.Entry and visit.Exitry >= covidianos.Exitry) or
+                                   (visit.Entry <= covidianos.Entry and visit.Exitry <= covidianos.Exitry) or 
+                                   (visit.Entry >= covidianos.Entry and visit.Exitry <= covidianos.Exitry) or 
+                                   (visit.Entry >= covidianos.Entry and visit.Exitry >= covidianos.Exitry)
+                                   )and visit.NFC_ID != ".$nfc.")
+                            ) as kati
+                            order by NFC_ID
+                            ";
+                            
+                            // echo $sql;
+                            $result = mysqli_query($conn, $sql2);
+                            // echo $result;
+                       
+                            if (mysqli_num_rows($result) > 0) {
+                              // output data of each row
+                              while($row = mysqli_fetch_assoc($result)) {
+                                // echo "id: " . $row["NFC_ID"]." Nfc :". $row["PLACE_ID"]. $row["Entry"]. $row["Exitry"]. "<br>";
+                                echo '
+                                <th scope="row">'.$idx.'</th>
+    
+                                <td>'. $row["NFC_ID"].'</td>
+                                <td>'. $row["PLACE_ID"].'</td>
+                                <td>'. $row["Entry"].'</td>
+                                <td>'. $row["Exitry"].'</td>
+                                </tr>';
+                              }        
+                            } else {
+                              echo "0 results";
+                            }
+
+                            echo "</tbody></table>";
+
+                    }
+                    
+                }
+                     ?>
+                     
+
+                
            </div>
             </div>
         </section>
@@ -82,9 +217,9 @@
                         <p class="lead mb-0">
                             Christoforos Vardakis el18883
                             <br />
-                            Stelio Balidis elXXXXX
+                            Stelio Balidis el17893
                             <br />
-                            Daniela Stoian elXXXXX
+                            Daniela Stoian el18140
                             
                         </p>
                     </div>
