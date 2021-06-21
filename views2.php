@@ -92,7 +92,7 @@
      
      
                          // echo '<script>alert("'.  $_POST['name'] . ',  '.$_POST['email'].'")</script>';
-                             $sql = "select * from customer
+                             $sql = "select * from customer_v
                              ";
                              // echo $sql;
                              $result = mysqli_query($conn, $sql);

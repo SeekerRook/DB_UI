@@ -236,17 +236,20 @@ Age:
 
                     else if($_GET['Query'] == 'q3'){
                     
-                        $q3 = "select distinct PLACE_ID , COUNT( NFC_ID ) OVER (PARTITION BY PLACE_ID) as cntt
+                        $q3 = "select distinct(host.FACILITY_ID ),cntt from
+                        (select distinct PLACE_ID , COUNT( NFC_ID ) OVER (PARTITION BY PLACE_ID) as cntt
                         from
                         (select nfcc.NFC_ID,PLACE_ID from
                         (select distinct (NFC_ID),PLACE_ID 
                         FROM visit
                         where Entry > '". $diff_p_str ."') as nfcc
                         join customer on customer.NFC_ID = nfcc.NFC_ID
-                        where (customer.Birth_Date > '". $diffmax  ."' and customer.Birth_Date < '".$diffmin  ."')) as soth
+                        where (customer.Birth_Date >= '". $diffmax  ."' and customer.Birth_Date <= '".$diffmin  ."')) as soth) as neww
+                        join host on host.PLACE_ID = neww.PLACE_ID
                         order by cntt desc
                         
                         ";
+                        
                         $result3 = mysqli_query($conn, $q3);
                         
                         echo '<table class="table table-striped table-hover">
@@ -264,7 +267,7 @@ Age:
                             //   echo " Place Id:". $row["PLACE_ID"]. " Entries: ". $row["cntt"]. "<br>";
                             echo '
                             <th scope="row">'.$idx.'</th>
-                            <td>'. $row["PLACE_ID"].'</td>
+                            <td>'. $row["FACILITY_ID"].'</td>
                             <td>'. $row["cntt"].'</td>
                             </tr>';
                             $idx +=1;

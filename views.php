@@ -94,11 +94,7 @@
                 
                     if ($_GET){
                     // echo '<script>alert("'.  $_POST['name'] . ',  '.$_POST['email'].'")</script>';
-                        $sql = "select FACILITY_ID,rs.DATE_TIME,rs.NFC_ID ,Cost
-                        from receive_service as rs
-                        join service_charge as sc
-                        on rs.DATE_TIME = sc.DATE_TIME and rs.NFC_ID = sc.NFC_ID 
-                        order by FACILITY_ID  
+                        $sql = "select * from sales  
                         
                         ";
                         // echo $sql;
@@ -143,8 +139,9 @@
                      ?>
                 </div>
                 </div>
+                </section>
             </div>
-        </section>
+
         <footer class="footer text-center">
             <div class="container">
                 <div class="row">
